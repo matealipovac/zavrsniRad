@@ -1,0 +1,11 @@
+/home/student/Desktop/spoaProba/build/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/spoaProba/build/CMakeFiles/spoaProba.dir
+/home/student/Desktop/spoaProba/build/CMakeFiles/edit_cache.dir
+/home/student/Desktop/spoaProba/build/spoa/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/spoaProba/build/spoa/CMakeFiles/spoa.dir
+/home/student/Desktop/spoaProba/build/spoa/CMakeFiles/edit_cache.dir
+/home/student/Desktop/spoaProba/build/alignment/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/spoaProba/build/alignment/CMakeFiles/alignment.dir
+/home/student/Desktop/spoaProba/build/alignment/CMakeFiles/edit_cache.dir
+/home/student/Desktop/spoaProba/build/bioparser/CMakeFiles/rebuild_cache.dir
+/home/student/Desktop/spoaProba/build/bioparser/CMakeFiles/edit_cache.dir
