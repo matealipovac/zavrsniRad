@@ -1,2 +1,2 @@
-# Empty dependencies file for spoaProba.
+# Empty dependencies file for alignment.
 # This may be replaced when dependencies are built.

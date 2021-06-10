@@ -8,7 +8,6 @@
 #include <time.h>
 #include <algorithm>
 
-namespace blonde {
 namespace alignment {
 
 enum AlignmentType {
@@ -17,7 +16,7 @@ enum AlignmentType {
     kSemiGlobal
 };
 
-enum SrcDirection {
+enum Direction {
     kLeft,
     kUp,
     kDiagonal,
@@ -26,44 +25,33 @@ enum SrcDirection {
 
 struct Cell {
 public:
-    std::int32_t score_;
-    SrcDirection direction_;
-
-    Cell() : score_(0), direction_(kNone) {}
+    std::int32_t val_;
+    Direction direction_;
+    Cell() : val_(0), direction_(kNone) {}
 };
 
-class CellComputer{
+class Alignment{
 private:
     const char* query;
     const char* target;
     unsigned int query_len;
     unsigned int target_len;
-    std::vector<std::vector<Cell>>& table;
+    std::vector<std::vector<Cell>>& matrix;
     int match, mismatch, gap;
 
 private:
-    void computeCell(int row, int col);
+    void generateCell(int row, int col);
 
 public:
-    CellComputer(
+    CellGenerator(
         const char* query, unsigned int query_len,
         const char* target, unsigned int target_len,
-        std::vector<std::vector<Cell>>& table,
+        std::vector<std::vector<Cell>>& matrix,
         int match, int mismatch, int gap
     );
 
-    void computeAllCells(AlignmentType type);
+    void generateAllCells(AlignmentType type);
 };
-
-void initAlignmentTable(std::vector<std::vector<Cell>>& table, int init_penalty, AlignmentType type);
-
-void calcBacktrackPath(
-    const std::vector<std::vector<Cell>> table,
-    int mismatch,
-    std::string& cigar_tmp,
-    int& i, int& j);
-    
-void calcCigar(std::string& uncompressed_cigar, std::string& cigar_result);
 
 int Align(
     const char* query, unsigned int query_len,
@@ -72,8 +60,6 @@ int Align(
     int match,
     int mismatch,
     int gap);
-
-}
 }
 
 #endif

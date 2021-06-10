@@ -1,216 +1,162 @@
 #include "alignment.h"
 
-namespace blonde {
-namespace alignment {
+namespace alignment
+{
 
-
-CellComputer::CellComputer(
-    const char* query, unsigned int query_len,
-    const char* target, unsigned int target_len,
-    std::vector<std::vector<Cell>>& table,
-    int match, int mismatch, int gap
-) : query(query), 
-    query_len(query_len), 
-    target(target), 
-    target_len(target_len), 
-    table(table), match(match), 
-    mismatch(mismatch), 
-    gap(gap) {
-
-}
-
-void CellComputer::computeCell(int row, int col) {
-    // Possible scores
-    int diagonal_score = table[row - 1][col - 1].score_;
-    diagonal_score += (query[row - 1] == target[col - 1]) ? match : mismatch;
-    int top_score = table[row - 1][col].score_ + gap;
-    int left_score = table[row][col - 1].score_ + gap;
-
-    int max_score;
-    SrcDirection dir;
-    if (diagonal_score >= left_score && diagonal_score >= top_score) {
-        dir = kDiagonal;
-        max_score = diagonal_score;
-    } else if (left_score >= diagonal_score && left_score >= top_score) {
-        dir = kLeft;
-        max_score = left_score;
-    } else if(top_score >= left_score && top_score >= diagonal_score) {
-        dir = kUp;
-        max_score = top_score;
+    Alignment::Alignment(
+        const char *query, unsigned int query_len,
+        const char *target, unsigned int target_len,
+        std::vector<std::vector<Cell>> &matrix,
+        int match, int mismatch, int gap) : query(query),
+                                            query_len(query_len),
+                                            target(target),
+                                            target_len(target_len),
+                                            matrix(matrix), match(match),
+                                            mismatch(mismatch),
+                                            gap(gap)
+    {
     }
-    table[row][col].score_ = max_score;
-    table[row][col].direction_ = dir;
-}
 
-void CellComputer::computeAllCells(AlignmentType type) {
-    for (int i = 1; i < table.size(); i++) {
-        for (int j = 1; j < table[0].size(); j++) {
-            computeCell(i, j);
-            if (type == kLocal && table[i][j].score_ <= 0) {
-                table[i][j].score_ = 0;
-                table[i][j].direction_ = kNone;
-            }
+    void Alignment::generateCell(int i, int j)
+    {
+
+        int diagonalValue = matrix[i - 1][j - 1].val_;
+        diagonalValue += (query[i - 1] == target[j - 1]) ? match : mismatch;
+        int topValue = matrix[i - 1][j].val_ + gap;
+        int leftValue = matrix[i][j - 1].val_ + gap;
+
+        int maxValue;
+        Direction dir;
+        if (diagonalValue >= leftValue && diagonal >= topValue)
+        {
+            dir = kDiagonal;
+            maxValue = diagonalValue;
         }
-    }
-}
-
-void initAlignmentTable(std::vector<std::vector<Cell>>& table, int init_penalty, AlignmentType type) {
-    int num_of_rows = table.size();
-    int num_of_cols = table[0].size();
-    if (type == kLocal || type == kSemiGlobal) init_penalty = 0;
-    SrcDirection top_row_direction = kNone;
-    SrcDirection first_col_direction = kNone;
-    if (type == kGlobal) {
-        top_row_direction = kLeft;
-        first_col_direction = kUp;
-    }
-
-    for (int i = 1; i < num_of_rows; i++) {
-    table[i][0].score_ = i * init_penalty;
-    table[i][0].direction_ = first_col_direction;
-    }
-    for (int i = 1; i < num_of_cols; i++) {
-        table[0][i].score_ = i * init_penalty;
-        table[0][i].direction_ = top_row_direction;
-    }
-}
-
-void calcBacktrackPath(
-    const std::vector<std::vector<Cell>> table,
-    int mismatch,
-    std::string& cigar_tmp,
-    int& i, int& j) {
-
-    for(int k = i + 1; k < table.size(); k++) {
-        cigar_tmp += "S";
-    }
-    while (table[i][j].direction_ != kNone) {
-        switch (table[i][j].direction_) {
-        case kDiagonal:
-            if(table[i-1][j-1].score_ + mismatch == table[i][j].score_) {
-                cigar_tmp += "X";
-            } else {
-                cigar_tmp += "=";
-            }
-            i--;
-            j--;
-            break;
-
-        case kUp:
-            cigar_tmp += "I";
-            i--;
-            break;
-
-        case kLeft:
-            cigar_tmp += "D";
-            j--;
-            break;
-
-        case kNone:
-            break;
+        else if (leftValue >= diagonalValue && leftValue >= topValue)
+        {
+            dir = kLeft;
+            maxValue = leftValue;
         }
-    }
-    for(int k = i; k > 0; k--) {
-        cigar_tmp += "S";
-    }
-}
-
-void calcCigar(std::string& uncompressed_cigar, std::string& cigar_result) {
-    std::reverse(uncompressed_cigar.begin(), uncompressed_cigar.end());
-    cigar_result = "";
-    char letter = uncompressed_cigar[0];
-    int cnt = 1;
-    for (int i = 1; i < uncompressed_cigar.size(); i++) {
-        if (uncompressed_cigar[i] != letter) {
-            cigar_result += std::to_string(cnt) + letter;
-            letter = uncompressed_cigar[i];
-            cnt = 1;
-        } else {
-            cnt++;
+        else if (topValue >= leftValue && topValue >= diagonalValue)
+        {
+            dir = kUp;
+            maxValue = topValue;
         }
+        matrix[i][j].val_ = maxValue;
+        matrix[i][j].direction_ = dir;
     }
-    cigar_result += std::to_string(cnt) + letter;
-}
 
-int Align(
-    const char* query, unsigned int query_len,
-    const char* target, unsigned int target_len,
-    AlignmentType type,
-    int match,
-    int mismatch,
-    int gap) {
-
-    std::string* cigar = nullptr;
-    unsigned int* target_begin = nullptr;
-
-    std::vector<std::vector<Cell>> table = std::vector<std::vector<Cell>> (query_len + 1, std::vector<Cell>(target_len + 1));
-    initAlignmentTable(table, gap, type);
-    int row_cnt = table.size();
-    int col_cnt = table[0].size();
-
-    CellComputer computer = CellComputer(query, query_len, target, target_len, table, match, mismatch, gap);
-    computer.computeAllCells(type);
-
-    int maximum, max_indx_row, max_indx_col;
-    switch (type) {
-    case kLocal: 
-        //Find Maximum in whole table
-        maximum = table[0][0].score_;
-        max_indx_row = 0;
-        max_indx_col = 0;
-        for (int i = 0; i < row_cnt; i++) {
-            for (int j = 0; j < col_cnt; j++) {
-                if (table[i][j].score_ >= maximum) {
-                    maximum = table[i][j].score_;
-                    max_indx_row = i;
-                    max_indx_col = j;
+    void Alignment::generateAllCells(AlignmentType type)
+    {
+        for (int i = 1; i < matrix.size(); i++)
+        {
+            for (int j = 1; j < matrix[0].size(); j++)
+            {
+                generateCell(i, j);
+                if (type == kLocal && matrix[i][j].val_ <= 0)
+                {
+                    matrix[i][j].val_ = 0;
+                    matrix[i][j].direction_ = kNone;
                 }
             }
         }
-        break;
-
-    case kGlobal:
-        max_indx_row = query_len;
-        max_indx_col = target_len;
-        maximum = table[query_len][target_len].score_;
-        break;
-
-    case kSemiGlobal:
-        //Find Maximum in last row or column
-        maximum = table[0][target_len].score_;
-        max_indx_row = 0;
-        max_indx_col = target_len;
-        for (int i = 0; i < row_cnt; i++) {
-            if (table[i][target_len].score_ >= maximum) {
-                maximum = table[i][target_len].score_;
-                max_indx_row = i;
-                max_indx_col = target_len;
-            }
-        }
-        for (int i = 0; i < col_cnt; i++) {
-            if (table[query_len][i].score_ >= maximum) {
-                maximum = table[query_len][i].score_;
-                max_indx_row = query_len;
-                max_indx_col = i;
-            }
-        }
-        break;
-
-    default:
-        throw "Undefined type of alignment";
-        break;
     }
 
-    if (cigar || target_begin) {
-        int i = max_indx_row;
-        int j = max_indx_col;
-        std::string cigar_tmp = "";
-        calcBacktrackPath(table, mismatch, cigar_tmp, i, j);
-        if (target_begin) *target_begin = j;
-        if (cigar) calcCigar(cigar_tmp, *cigar);
-    }
-    return maximum;
-}
+    int Align(
+        const char *query, unsigned int query_len,
+        const char *target, unsigned int target_len,
+        AlignmentType type,
+        int match,
+        int mismatch,
+        int gap)
+    {
+        std::vector<std::vector<Cell>> matrix = std::vector<std::vector<Cell>>(query_len + 1, std::vector<Cell>(target_len + 1));
 
-}
+        //initialize matrix
+        int num_of_rows = matrix.size();
+        int num_of_cols = matrix[0].size();
+        if (type == kLocal || type == kSemiGlobal)
+            gap = 0;
+        Direction top_row_direction = kNone;
+        Direction first_col_direction = kNone;
+        if (type == kGlobal)
+        {
+            top_row_direction = kLeft;
+            first_col_direction = kUp;
+        }
+
+        for (int i = 1; i < num_of_rows; i++)
+        {
+            matrix[i][0].val_ = i * gap;
+            matrix[i][0].direction_ = first_col_direction;
+        }
+        for (int i = 1; i < num_of_cols; i++)
+        {
+            matrix[0][i].val_ = i * gap;
+            matrix[0][i].direction_ = top_row_direction;
+        }
+        int rowLen = matrix.size();
+        int colLen = matrix[0].size();
+
+        CellGenerator generator = CellGenerator (query, query_len, target, target_len, matrix, match, mismatch, gap);
+        generator.generateAllCells(type);
+
+        int result;
+        int maxRow, maxCol;
+        switch (type)
+        {
+        case kLocal:
+            result = matrix[0][0].val_;
+            maxRow = 0;
+            maxCol = 0;
+            for (int i = 0; i < rowLen; i++)
+            {
+                for (int j = 0; j < colLen; j++)
+                {
+                    if (matrix[i][j].val_ >= result)
+                    {
+                        result = matrix[i][j].val_;
+                        maxRow = i;
+                        maxCol = j;
+                    }
+                }
+            }
+            break;
+
+        case kGlobal:
+            maxRow = query_len;
+            maxCol = target_len;
+            result = matrix[query_len][target_len].val_;
+            break;
+
+        case kSemiGlobal:
+            result = matrix[0][target_len].val_;
+            maxRow = 0;
+            maxCol = target_len;
+            for (int i = 0; i < rowLen; i++)
+            {
+                if (matrix[i][target_len].val_ >= result)
+                {
+                    result = matrix[i][target_len].val_;
+                    maxRow = i;
+                    maxCol = target_len;
+                }
+            }
+            for (int i = 0; i < colLen; i++)
+            {
+                if (matrix[query_len][i].val_ >= result)
+                {
+                    result = matrix[query_len][i].val_;
+                    maxRow = query_len;
+                    maxCol = i;
+                }
+            }
+            break;
+
+        default:
+            break;
+        }
+        return result;
+    }
+
 }

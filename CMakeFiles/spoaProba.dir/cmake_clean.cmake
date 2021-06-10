@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/spoaProba.dir/main.cpp.o"
+  "CMakeFiles/spoaProba.dir/main.cpp.o.d"
   "spoaProba"
   "spoaProba.pdb"
 )

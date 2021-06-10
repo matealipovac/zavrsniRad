@@ -1,1 +1,1 @@
-/usr/bin/c++     CMakeFiles/spoaProba.dir/main.cpp.o  -o spoaProba  spoa/lib/libspoa.a 
+/Library/Developer/CommandLineTools/usr/bin/c++  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/spoaProba.dir/main.cpp.o -o spoaProba  spoa/lib/libspoa.a alignment/libalignment.a /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/lib/libz.tbd 

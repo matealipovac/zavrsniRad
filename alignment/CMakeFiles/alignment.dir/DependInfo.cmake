@@ -8,13 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/mlipovac/Matea/zavrsniRad/main.cpp" "CMakeFiles/spoaProba.dir/main.cpp.o" "gcc" "CMakeFiles/spoaProba.dir/main.cpp.o.d"
+  "/Users/mlipovac/Matea/zavrsniRad/alignment/alignment.cpp" "alignment/CMakeFiles/alignment.dir/alignment.cpp.o" "gcc" "alignment/CMakeFiles/alignment.dir/alignment.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/mlipovac/Matea/zavrsniRad/spoa/CMakeFiles/spoa.dir/DependInfo.cmake"
-  "/Users/mlipovac/Matea/zavrsniRad/alignment/CMakeFiles/alignment.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -1,6 +1,11 @@
-/home/student/Desktop/spoaProba/CMakeFiles/rebuild_cache.dir
-/home/student/Desktop/spoaProba/CMakeFiles/spoaProba.dir
-/home/student/Desktop/spoaProba/CMakeFiles/edit_cache.dir
-/home/student/Desktop/spoaProba/spoa/CMakeFiles/rebuild_cache.dir
-/home/student/Desktop/spoaProba/spoa/CMakeFiles/spoa.dir
-/home/student/Desktop/spoaProba/spoa/CMakeFiles/edit_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/CMakeFiles/rebuild_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/CMakeFiles/edit_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/CMakeFiles/spoaProba.dir
+/Users/mlipovac/Matea/zavrsniRad/spoa/CMakeFiles/rebuild_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/spoa/CMakeFiles/edit_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/spoa/CMakeFiles/spoa.dir
+/Users/mlipovac/Matea/zavrsniRad/alignment/CMakeFiles/rebuild_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/alignment/CMakeFiles/edit_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/alignment/CMakeFiles/alignment.dir
+/Users/mlipovac/Matea/zavrsniRad/bioparser/CMakeFiles/rebuild_cache.dir
+/Users/mlipovac/Matea/zavrsniRad/bioparser/CMakeFiles/edit_cache.dir

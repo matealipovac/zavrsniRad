@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/mlipovac/Matea/zavrsniRad/spoa/include -I/Users/mlipovac/Matea/zavrsniRad/bioparser/include
+CXX_INCLUDES = 
 
 CXX_FLAGS =  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -std=gnu++17
 
