@@ -8,26 +8,8 @@
 // #include <bits/stdc++.h>
 #include "spoa/include/spoa/spoa.hpp"
 #include "alignment/alignment.h"
-#include "bioparser/include/bioparser/fastq_parser.hpp"
-#include "biosoup/include/biosoup/sequence.hpp"
 
 using namespace std;
-
-struct Sequence
-{ 
-public:
-    const char *name;
-    std::uint32_t name_len;
-    const char *data;
-    std::uint32_t data_len;
-    
-    Sequence( 
-        const char *name, std::uint32_t name_len,
-        const char *data, std::uint32_t data_len,
-        const char *q, std::uint32_t q_len) : name(name), name_len(name_len), data(data), data_len(data_len)
-    {
-    }
-};
 
 class Point
 {
