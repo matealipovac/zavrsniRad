@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-// #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #include "spoa/include/spoa/spoa.hpp"
 #include "alignment/alignment.h"
 

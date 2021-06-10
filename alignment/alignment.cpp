@@ -3,7 +3,7 @@
 namespace alignment
 {
 
-    Alignment::Alignment(
+    CellGenerator::CellGenerator(
         const char *query, unsigned int query_len,
         const char *target, unsigned int target_len,
         std::vector<std::vector<Cell>> &matrix,
@@ -17,7 +17,7 @@ namespace alignment
     {
     }
 
-    void Alignment::generateCell(int i, int j)
+    void CellGenerator::generateCell(int i, int j)
     {
 
         int diagonalValue = matrix[i - 1][j - 1].val_;
@@ -27,7 +27,7 @@ namespace alignment
 
         int maxValue;
         Direction dir;
-        if (diagonalValue >= leftValue && diagonal >= topValue)
+        if (diagonalValue >= leftValue && diagonalValue >= topValue)
         {
             dir = kDiagonal;
             maxValue = diagonalValue;
@@ -46,7 +46,7 @@ namespace alignment
         matrix[i][j].direction_ = dir;
     }
 
-    void Alignment::generateAllCells(AlignmentType type)
+    void CellGenerator::generateAllCells(AlignmentType type)
     {
         for (int i = 1; i < matrix.size(); i++)
         {

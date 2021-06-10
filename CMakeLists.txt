@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(spoaProba)
+project(clustering)
 
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY${CMAKE_BINARY_DIR}/lib)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -11,10 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(${PROJECT_NAME} main.cpp)
 
 add_subdirectory(spoa EXCLUDE_FROM_ALL)
-target_link_libraries(spoaProba PUBLIC spoa)
+target_link_libraries(clustering PUBLIC spoa)
 
 add_subdirectory(alignment EXCLUDE_FROM_ALL)
-target_link_libraries(spoaProba PUBLIC alignment)
+target_link_libraries(clustering PUBLIC alignment)
 
-add_subdirectory(bioparser EXCLUDE_FROM_ALL)
-target_link_libraries(spoaProba PUBLIC bioparser)

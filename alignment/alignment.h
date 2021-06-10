@@ -30,7 +30,7 @@ public:
     Cell() : val_(0), direction_(kNone) {}
 };
 
-class Alignment{
+class CellGenerator{
 private:
     const char* query;
     const char* target;

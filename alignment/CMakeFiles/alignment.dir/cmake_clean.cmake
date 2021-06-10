@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/alignment.dir/alignment.cpp.o"
-  "CMakeFiles/alignment.dir/alignment.cpp.o.d"
   "libalignment.a"
   "libalignment.pdb"
 )
